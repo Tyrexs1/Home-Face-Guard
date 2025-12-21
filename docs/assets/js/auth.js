@@ -116,19 +116,28 @@ document.addEventListener('DOMContentLoaded', () => {
 // =========================
 // GUARD (halaman protected)
 // =========================
-function isAuthPage(){
-    const p = (location.pathname || '').toLowerCase();
-    return p.endsWith('/login.html') || p.endsWith('login.html') || p.endsWith('/register.html') || p.endsWith('register.html');
+function isAuthPage() {
+    const parts = (location.pathname || '')
+        .toLowerCase()
+        .split('/')
+        .filter(Boolean);
+
+    const last = (parts[parts.length - 1] || '').trim(); // contoh: "register.html" atau "register"
+
+    return last === 'login' || last === 'login.html' || last === 'register' || last === 'register.html';
 }
 
-function requireAuth(){
+function requireAuth() {
+    // jangan guard di halaman login/register
     if (isAuthPage()) return;
+
     const user = getAuthUser();
     if (!user) {
-        // pakai replace biar tidak bisa "Back" ke halaman protected
-        location.replace('login.html');
+        // pakai root relatif agar aman di Netlify & GitHub Pages
+        location.replace('./login.html');
     }
 }
+
 
 function logout(){
     setAuthUser(null);
