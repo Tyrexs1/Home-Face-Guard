@@ -95,7 +95,7 @@ async function checkResidentDataset() {
         
         // Navigasi Scan: Kirim nama melalui URL Query Parameter
         scanButton.onclick = () => {
-            window.location.href = `scan.html?name=${encodeURIComponent(currentName)}`;
+            window.location.href = `/scan?name=${encodeURIComponent(currentName)}`;
         };
     }
     // --- END KONTROL TOMBOL SCAN ---
@@ -192,7 +192,7 @@ async function addResident(event) {
  */
 function editResident(id) {
     // Arahkan ke halaman edit dengan membawa ID penghuni
-    window.location.href = `edit.html?id=${id}`;
+    window.location.href = `/edit?id=${id}`;
 }
 
 /**
