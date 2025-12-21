@@ -3,3 +3,4 @@ Flask-CORS
 numpy
 opencv-contrib-python
 Pillow
+gunicorn
