@@ -7,10 +7,10 @@
     try{ return (window.getAuthUser && getAuthUser()) || null; }catch(_){ return null; }
   }
   function isAuthed(){ return !!getUser(); }
-  function activeClass(href){
-    const path = (location.pathname.split('/').pop() || 'index.html');
-    return path === href ? 'active' : '';
-  }
+function activeClass(route){
+  const p = (location.pathname || '/').replace(/\/+$/,'') || '/';
+  return p === route ? 'active' : '';
+}
 
 function isAuthPage(){
   const parts = (location.pathname || '').toLowerCase().split('/').filter(Boolean);
