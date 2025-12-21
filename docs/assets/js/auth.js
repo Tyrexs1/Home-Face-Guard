@@ -1,160 +1,176 @@
 // frontend/assets/js/auth.js
 
-// Gunakan MOCK_API_BASE dari app.js
-if (typeof MOCK_API_BASE === 'https://home-face-guard.onrender.com/api') {
-    console.error('app.js belum dimuat (MOCK_API_BASE tidak ditemukan).');
+// Ambil base URL dari app.js (mendukung API_BASE atau MOCK_API_BASE)
+const AUTH_API_BASE = (typeof API_BASE !== 'undefined' && API_BASE)
+  ? API_BASE
+  : (typeof MOCK_API_BASE !== 'undefined' && MOCK_API_BASE)
+    ? MOCK_API_BASE
+    : null;
+
+if (!AUTH_API_BASE) {
+  console.error('Base API tidak ditemukan. Pastikan app.js dimuat sebelum auth.js (API_BASE / MOCK_API_BASE).');
+}
+
+// Helper bikin URL aman (hindari double slash)
+function apiUrl(path) {
+  const base = (AUTH_API_BASE || '').replace(/\/+$/, '');
+  const p = (path || '').startsWith('/') ? path : `/${path}`;
+  return `${base}${p}`;
 }
 
 function setAuthUser(user) {
-    try {
-        localStorage.setItem('auth_user', JSON.stringify(user || null));
-    } catch (_) {}
+  try {
+    localStorage.setItem('auth_user', JSON.stringify(user || null));
+  } catch (_) {}
 }
 
 function getAuthUser() {
-    try {
-        const raw = localStorage.getItem('auth_user');
-        return raw ? JSON.parse(raw) : null;
-    } catch (_) {
-        return null;
-    }
+  try {
+    const raw = localStorage.getItem('auth_user');
+    return raw ? JSON.parse(raw) : null;
+  } catch (_) {
+    return null;
+  }
 }
 
 function showFormMessage(el, type, text) {
-    if (!el) return;
-    el.className = type === 'error'
-        ? 'mb-4 rounded-xl border border-red-500/40 bg-red-500/10 p-3 text-red-200 text-sm'
-        : 'mb-4 rounded-xl border border-green-500/40 bg-green-500/10 p-3 text-green-200 text-sm';
-    el.textContent = text;
-    el.style.display = 'block';
+  if (!el) return;
+  el.className = type === 'error'
+    ? 'mb-4 rounded-xl border border-red-500/40 bg-red-500/10 p-3 text-red-200 text-sm'
+    : 'mb-4 rounded-xl border border-green-500/40 bg-green-500/10 p-3 text-green-200 text-sm';
+  el.textContent = text;
+  el.style.display = 'block';
 }
 
 // =========================
 // LOGIN
 // =========================
 async function handleLoginSubmit(e) {
-    e.preventDefault();
-    const msg = document.getElementById('form-message');
-    if (msg) msg.style.display = 'none';
+  e.preventDefault();
+  const msg = document.getElementById('form-message');
+  if (msg) msg.style.display = 'none';
 
-    const email = (document.getElementById('login-email')?.value || '').trim();
-    const password = (document.getElementById('login-password')?.value || '').trim();
+  const email = (document.getElementById('login-email')?.value || '').trim();
+  const password = (document.getElementById('login-password')?.value || '').trim();
 
-    try {
-        const res = await fetch(MOCK_API_BASE + '/auth/login', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email, password })
-        });
+  try {
+    if (!AUTH_API_BASE) throw new Error('Konfigurasi API belum siap. Pastikan app.js dimuat.');
 
-        const data = await res.json().catch(() => ({}));
-        if (!res.ok) throw new Error(data.message || 'Login gagal');
+    const res = await fetch(apiUrl('/auth/login'), {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password }),
+    });
 
-        setAuthUser(data.user);
-        showFormMessage(msg, 'success', data.message || 'Login berhasil');
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) throw new Error(data.message || 'Login gagal');
 
-        setTimeout(() => {
-            window.location.href = '/';
-        }, 600);
-    } catch (err) {
-        showFormMessage(msg, 'error', err.message || 'Terjadi kesalahan');
-    }
+    setAuthUser(data.user);
+    showFormMessage(msg, 'success', data.message || 'Login berhasil');
+
+    setTimeout(() => {
+      // Netlify aman pakai path relatif
+      window.location.href = './index.html';
+    }, 600);
+
+  } catch (err) {
+    showFormMessage(msg, 'error', err.message || 'Terjadi kesalahan');
+  }
 }
 
 // =========================
 // REGISTER
 // =========================
 async function handleRegisterSubmit(e) {
-    e.preventDefault();
-    const msg = document.getElementById('form-message');
-    if (msg) msg.style.display = 'none';
+  e.preventDefault();
+  const msg = document.getElementById('form-message');
+  if (msg) msg.style.display = 'none';
 
-    const name = (document.getElementById('reg-name')?.value || '').trim();
-    const email = (document.getElementById('reg-email')?.value || '').trim();
-    const password = (document.getElementById('reg-password')?.value || '').trim();
-    const confirm = (document.getElementById('reg-confirm')?.value || '').trim();
+  const name = (document.getElementById('reg-name')?.value || '').trim();
+  const email = (document.getElementById('reg-email')?.value || '').trim();
+  const password = (document.getElementById('reg-password')?.value || '').trim();
+  const confirm = (document.getElementById('reg-confirm')?.value || '').trim();
 
-    if (password !== confirm) {
-        showFormMessage(msg, 'error', 'Konfirmasi password tidak sama.');
-        return;
-    }
+  if (password !== confirm) {
+    showFormMessage(msg, 'error', 'Konfirmasi password tidak sama.');
+    return;
+  }
 
-    try {
-        const res = await fetch(MOCK_API_BASE + '/auth/register', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ name, email, password })
-        });
+  try {
+    if (!AUTH_API_BASE) throw new Error('Konfigurasi API belum siap. Pastikan app.js dimuat.');
 
-        const data = await res.json().catch(() => ({}));
-        if (!res.ok) throw new Error(data.message || 'Registrasi gagal');
+    const res = await fetch(apiUrl('/auth/register'), {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, email, password }),
+    });
 
-        showFormMessage(msg, 'success', data.message || 'Registrasi berhasil');
-        setTimeout(() => {
-            window.location.href = '/login';
-        }, 700);
-    } catch (err) {
-        showFormMessage(msg, 'error', err.message || 'Terjadi kesalahan');
-    }
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) throw new Error(data.message || 'Registrasi gagal');
+
+    showFormMessage(msg, 'success', data.message || 'Registrasi berhasil');
+
+    setTimeout(() => {
+      window.location.href = './login.html';
+    }, 700);
+
+  } catch (err) {
+    showFormMessage(msg, 'error', err.message || 'Terjadi kesalahan');
+  }
 }
-
-// Auto-bind sesuai halaman
-document.addEventListener('DOMContentLoaded', () => {
-    const loginForm = document.getElementById('login-form');
-    const registerForm = document.getElementById('register-form');
-
-    if (loginForm) loginForm.addEventListener('submit', handleLoginSubmit);
-    if (registerForm) registerForm.addEventListener('submit', handleRegisterSubmit);
-
-    // Optional: tampilkan nama user jika sudah login
-    const u = getAuthUser();
-    const who = document.getElementById('auth-who');
-    if (who && u?.name) who.textContent = u.name;
-});
-
 
 // =========================
 // GUARD (halaman protected)
 // =========================
 function isAuthPage() {
-    const parts = (location.pathname || '')
-        .toLowerCase()
-        .split('/')
-        .filter(Boolean);
+  const parts = (location.pathname || '')
+    .toLowerCase()
+    .split('/')
+    .filter(Boolean);
 
-    const last = (parts[parts.length - 1] || '').trim(); // contoh: "register.html" atau "register"
-
-    return last === 'login' || last === 'login.html' || last === 'register' || last === 'register.html';
+  const last = (parts[parts.length - 1] || '').trim();
+  return last === 'login' || last === 'login.html' || last === 'register' || last === 'register.html';
 }
 
 function requireAuth() {
-    // jangan guard di halaman login/register
-    if (isAuthPage()) return;
+  // jangan guard di halaman login/register
+  if (isAuthPage()) return;
 
-    const user = getAuthUser();
-    if (!user) {
-        // pakai root relatif agar aman di Netlify & GitHub Pages
-        location.replace('./login');
-    }
+  const user = getAuthUser();
+  if (!user) {
+    // Netlify paling aman pakai file html
+    location.replace('./login.html');
+  }
 }
 
-
-function logout(){
-    setAuthUser(null);
-    try { localStorage.removeItem('auth_user'); } catch(_) {}
-    location.replace('./login');
+function logout() {
+  setAuthUser(null);
+  try { localStorage.removeItem('auth_user'); } catch (_) {}
+  location.replace('./login.html');
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Auto-guard
-    try { requireAuth(); } catch(_) {}
+  // Bind form sesuai halaman
+  const loginForm = document.getElementById('login-form');
+  const registerForm = document.getElementById('register-form');
 
-    // Hook logout button if present
-    const btn = document.getElementById('logout-btn');
-    if (btn) {
-        btn.addEventListener('click', (e) => {
-            e.preventDefault();
-            logout();
-        });
-    }
+  if (loginForm) loginForm.addEventListener('submit', handleLoginSubmit);
+  if (registerForm) registerForm.addEventListener('submit', handleRegisterSubmit);
+
+  // Auto-guard
+  try { requireAuth(); } catch (_) {}
+
+  // Optional: tampilkan nama user jika sudah login
+  const u = getAuthUser();
+  const who = document.getElementById('auth-who');
+  if (who && u?.name) who.textContent = u.name;
+
+  // Hook logout button
+  const btn = document.getElementById('logout-btn');
+  if (btn) {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      logout();
+    });
+  }
 });
