@@ -25,11 +25,20 @@ def create_app():
     app.config["MAX_FORM_PARTS"] = int(os.getenv("MAX_FORM_PARTS", "8000"))
 
     # ✅ CORS (tanpa path, cukup origin domain)
-    CORS(
-        app,
-        resources={r"/api/*": {"origins": ["https://homeface-guard.netlify.app"]}},
-        supports_credentials=False,  # ubah jadi True hanya kalau pakai cookie/session
+   CORS(
+    app,
+    resources={
+        r"/api/*": {
+            "origins": [
+                "https://homeface-guard.netlify.app",
+                "https://www.homeface-guard.netlify.app",
+                r"^https:\/\/.*--homeface-guard\.netlify\.app$"
+                ]
+            }
+        },
+        supports_credentials=False,
     )
+
 
     # routes
     app.register_blueprint(upload_bp, url_prefix="/api")
