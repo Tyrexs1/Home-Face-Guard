@@ -2,6 +2,8 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 import os
+from flask_cors import CORS
+CORS(app, resources={r"/api/*": {"origins": "https://tyrexs1.github.io"}})
 
 from werkzeug.exceptions import HTTPException, RequestEntityTooLarge, BadRequest
 
