@@ -27,7 +27,7 @@ def create_app():
     # ✅ CORS (tanpa path, cukup origin domain)
     CORS(
         app,
-        resources={r"/api/*": {"origins": "https://homeface-guard.netlify.app"}},
+        resources={r"/api/*": {"origins": "https://homefaceguard.netlify.app"}},
     )
 
 
