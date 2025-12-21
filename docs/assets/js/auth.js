@@ -54,7 +54,7 @@ async function handleLoginSubmit(e) {
         showFormMessage(msg, 'success', data.message || 'Login berhasil');
 
         setTimeout(() => {
-            window.location.href = 'index.html';
+            window.location.href = '/';
         }, 600);
     } catch (err) {
         showFormMessage(msg, 'error', err.message || 'Terjadi kesalahan');
@@ -91,7 +91,7 @@ async function handleRegisterSubmit(e) {
 
         showFormMessage(msg, 'success', data.message || 'Registrasi berhasil');
         setTimeout(() => {
-            window.location.href = 'login.html';
+            window.location.href = '/login';
         }, 700);
     } catch (err) {
         showFormMessage(msg, 'error', err.message || 'Terjadi kesalahan');
@@ -134,7 +134,7 @@ function requireAuth() {
     const user = getAuthUser();
     if (!user) {
         // pakai root relatif agar aman di Netlify & GitHub Pages
-        location.replace('./login.html');
+        location.replace('./login');
     }
 }
 
@@ -142,7 +142,7 @@ function requireAuth() {
 function logout(){
     setAuthUser(null);
     try { localStorage.removeItem('auth_user'); } catch(_) {}
-    location.replace('login.html');
+    location.replace('./login');
 }
 
 document.addEventListener('DOMContentLoaded', () => {
