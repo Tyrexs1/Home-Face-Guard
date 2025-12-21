@@ -315,7 +315,7 @@ async function sendTrainingData(residentName, images) {
         alert(`Data penghuni ${newResident.name} berhasil disimpan. Total sampel: ${newResident.face_count ?? finalFaceCount}. Anda akan diarahkan ke halaman Akun.`);
         
         stopWebcam(); 
-        window.location.href = 'akun.html'; 
+        window.location.href = '/akun'; 
         
 
     } catch(e) {
