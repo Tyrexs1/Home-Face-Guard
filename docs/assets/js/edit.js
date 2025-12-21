@@ -55,7 +55,7 @@ async function loadResidentData() {
         const scanButton = document.getElementById('start-scan-link');
         scanButton.onclick = () => {
             const currentName = document.getElementById('edit-resident-name').value.trim();
-            window.location.href = `scan.html?name=${encodeURIComponent(currentName)}&id=${resident.id}&mode=update`;
+            window.location.href = `/scan?name=${encodeURIComponent(currentName)}&id=${resident.id}&mode=update`;
         };
         
         // Atur Tombol Hapus Dataset (Pastikan terhubung dengan fungsi di bawah)
@@ -148,7 +148,7 @@ async function updateResidentData(event) {
 
         // 3. Sukses Penuh
         alert(`Perubahan untuk ${updateResult.name} berhasil disimpan! (${updateResult.face_count} sampel wajah)`);
-        window.location.href = 'akun.html'; // Kembali ke daftar
+        window.location.href = '/akun'; // Kembali ke daftar
 
     } catch (error) {
         console.error("Error updating resident:", error);
