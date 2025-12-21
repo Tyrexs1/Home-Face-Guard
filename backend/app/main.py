@@ -28,7 +28,8 @@ def create_app():
     CORS(
         app,
         resources={r"/api/*": {"origins": [
-            "https://homeface-guard.netlify.app"
+            "https://homeface-guard.netlify.app/",
+            "https://*.netlify.app"
         ]}},
         supports_credentials=True
     )
