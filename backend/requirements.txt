@@ -1,6 +1,6 @@
 Flask
 Flask-CORS
 numpy
-opencv-contrib-python
+opencv-contrib-python-headless
 Pillow
 gunicorn
