@@ -76,7 +76,7 @@ function renderLogList(items){
         <div class="text-right">
           <div class="text-white font-semibold">${formatTime(d)}</div>
           <div class="text-gray-400 text-sm">${formatDate(d)}</div>
-          <a href="log_detail.html?id=${encodeURIComponent(item.id)}" class="text-blue-400 hover:text-blue-300 font-medium">Lihat Detail</a>
+          <a href="/log_detail?id=${encodeURIComponent(item.id)}" class="text-blue-400 hover:text-blue-300 font-medium">Lihat Detail</a>
         </div>
       </div>
     `;
