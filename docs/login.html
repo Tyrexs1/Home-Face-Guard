@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | Smart Home Security</title>
+<script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+    <div id="app" class="min-h-screen">
+        <header class="sticky top-0 bg-[#252a34] shadow-lg z-10">
+  <div id="app-navbar"></div>
+</header>
+
+        <main class="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8">
+            <div class="max-w-md mx-auto bg-[#252a34] p-6 rounded-xl shadow-2xl border border-blue-900/50">
+                <h1 class="text-2xl font-bold text-white">Login</h1>
+                <p class="text-sm text-gray-400 mt-1">Masuk untuk mengakses dashboard.</p>
+
+                <div id="form-message" style="display:none;"></div>
+
+                <form id="login-form" class="mt-6 space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-300" for="login-email">Email</label>
+                        <input id="login-email" type="email" required
+                               class="mt-1 block w-full p-2 rounded-lg bg-gray-700 border border-gray-600 focus:ring-blue-500 focus:border-blue-500 text-white"
+                               placeholder="nama@email.com">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-300" for="login-password">Password</label>
+                        <input id="login-password" type="password" required
+                               class="mt-1 block w-full p-2 rounded-lg bg-gray-700 border border-gray-600 focus:ring-blue-500 focus:border-blue-500 text-white"
+                               placeholder="••••••••">
+                        <p class="text-xs text-gray-500 mt-2">Minimal 6 karakter.</p>
+                    </div>
+
+                    <button type="submit"
+                            class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg shadow-md transition duration-150">
+                        Login
+                    </button>
+                </form>
+
+                <div class="text-sm text-gray-400 mt-4">
+                    Belum punya akun? <a href="register.html" class="text-blue-400 hover:text-blue-300">Registrasi</a>
+                </div>
+            </div>
+        </main>
+    </div>
+
+
+<script src="assets/js/app.js"></script>
+<script src="assets/js/theme.js"></script>
+<script src="assets/js/auth.js"></script>
+<script src="assets/js/nav.js"></script>
+
+</body>
+</html>

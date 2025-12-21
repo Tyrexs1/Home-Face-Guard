@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manajemen Penghuni | Smart Home Security</title>
+<script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="assets/css/style.css"> 
+</head>
+<body>
+
+    <div id="app" class="min-h-screen">
+        <header class="sticky top-0 bg-[#252a34] shadow-lg z-10">
+  <div id="app-navbar"></div>
+</header>
+
+        <main class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+            <h1 class="text-3xl font-bold text-white mb-6">Manajemen Penghuni</h1>
+
+            <div class="bg-[#252a34] p-6 rounded-xl shadow-2xl mb-8 border border-blue-900/50">
+                <h2 class="text-xl font-semibold text-blue-400 mb-4 flex items-center">
+                    <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    Tambah Penghuni
+                </h2>
+                <form id="add-resident-form" class="space-y-4" onsubmit="event.preventDefault(); addResident(event);">
+                    <div>
+                        <label for="new-resident-name" class="block text-sm font-medium text-gray-300">Nama Lengkap</label>
+                        <input type="text" id="new-resident-name" required class="mt-1 block w-full p-2 rounded-lg bg-gray-700 border border-gray-600 focus:ring-blue-500 focus:border-blue-500 text-white">
+                    </div>
+                    <div class="space-y-3">
+                        <label class="block text-sm font-medium text-gray-300">Metode Pendaftaran Wajah (Opsional)</label>
+
+                        <div>
+                            <label for="new-resident-photo" class="block text-sm font-medium text-gray-400 mb-2">1. Unggah File Foto (Disarankan 3 Sudut)</label>
+                            <input type="file" id="new-resident-photo" accept="image/*" multiple class="block w-full text-sm text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
+                        </div>
+                        
+                        <div class="pt-2">
+                            <label class="block text-sm font-medium text-gray-400 mb-2">2. Scan Wajah Real-Time</label>
+                            <button type="button" id="start-scan-link" disabled class="w-full bg-indigo-800 text-gray-500 font-bold py-2 px-4 rounded-lg shadow-md transition duration-150 flex items-center justify-center cursor-not-allowed">
+                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.218A2 2 0 0110.69 4h2.62a2 2 0 011.664.89l.812 1.218A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                                Isi Nama untuk Scan Wajah
+                            </button>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg shadow-md transition duration-150 mt-4">
+                        Simpan Penghuni
+                    </button>
+                </form>
+            </div>
+
+            <div class="bg-[#252a34] p-6 rounded-xl shadow-2xl border border-blue-900/50">
+                <h2 class="text-xl font-semibold text-blue-400 mb-4 flex items-center">
+                    <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H5a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-5m-7-3v-2a2 2 0 012-2h4a2 2 0 012 2v2m-6 0h6"></path></svg>
+                    Daftar Penghuni
+                </h2>
+                <ul id="residents-list" class="space-y-3">
+                    <li class="text-gray-500 text-sm">Memuat daftar penghuni...</li>
+                </ul>
+            </div>
+        </main>
+    </div>
+
+<script src="assets/js/app.js"></script>
+<script src="assets/js/theme.js"></script>
+<script src="assets/js/auth.js"></script>
+<script src="assets/js/nav.js"></script>
+<script src="assets/js/akun.js"></script>
+</body>
+</html>

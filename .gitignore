@@ -1,0 +1,34 @@
+# --- OS / Editor ---
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# --- Python cache ---
+__pycache__/
+*.py[cod]
+*.pyo
+
+# --- Virtual env ---
+.venv/
+venv/
+env/
+backend/.venv/
+
+# --- Logs ---
+*.log
+
+# --- SQLite DB (jangan commit) ---
+*.db
+backend/app/*.db
+
+# --- Dataset / snapshots / models (besar, jangan commit) ---
+backend/dataset/
+backend/dataset/**
+
+# --- Node (kalau suatu saat pakai tooling) ---
+node_modules/
+
+# --- Build artifacts (kalau nanti ada) ---
+dist/
+build/

@@ -1,0 +1,313 @@
+/* frontend/assets/css/style.css */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+
+:root{
+  --bg: #1a1e28;
+  --text: #e5e7eb;
+  --muted: #9ca3af;
+  --accent: #60a5fa; /* blue-400 */
+  --header: #252a34;
+  --surface: #343a45;
+  --surface-2: #1f2430;
+  --border: rgba(59, 130, 246, 0.25);
+  --input-bg: #374151; /* gray-700 */
+  --input-border: #4b5563; /* gray-600 */
+  --shadow: 0 10px 25px rgba(0,0,0,0.35);
+}
+
+:root[data-theme="light"]{
+  --bg: #f3f4f6;
+  --text: #111827;
+  --muted: #4b5563;
+  --accent: #2563eb; /* blue-600 */
+  --header: #ffffff;
+  --surface: #ffffff;
+  --surface-2: #f9fafb;
+  --border: rgba(59, 130, 246, 0.22);
+  --input-bg: #ffffff;
+  --input-border: #d1d5db; /* gray-300 */
+  --shadow: 0 10px 25px rgba(0,0,0,0.10);
+}
+
+html, body{
+  height: 100%;
+}
+
+body{
+  font-family: 'Inter', sans-serif;
+  background-color: var(--bg);
+  color: var(--text);
+}
+
+/* =============================================================
+   Light mode compatibility layer for Tailwind "hard-coded" colors
+   (UI HTML tetap, tapi warna jadi terbaca di Light mode)
+   ============================================================= */
+
+/* Headings / primary text */
+:root[data-theme="light"] .text-white{ color: var(--text) !important; }
+
+/* Accent (blue) */
+:root[data-theme="light"] .text-blue-400,
+:root[data-theme="light"] .text-blue-300{ color: var(--accent) !important; }
+
+/* Status colors (biar tidak pucat di background terang) */
+:root[data-theme="light"] .text-green-400{ color: #16a34a !important; } /* green-600 */
+:root[data-theme="light"] .text-yellow-400{ color: #d97706 !important; } /* amber-600 */
+:root[data-theme="light"] .text-red-400{ color: #dc2626 !important; } /* red-600 */
+
+/* Background grays used by inputs/avatars */
+:root[data-theme="light"] .bg-gray-700{ background-color: var(--input-bg) !important; }
+:root[data-theme="light"] .bg-gray-800{ background-color: var(--surface-2) !important; }
+:root[data-theme="light"] .bg-gray-900{ background-color: var(--surface-2) !important; }
+
+/* Borders that look too heavy in light mode */
+:root[data-theme="light"] .border-blue-900\/50{ border-color: rgba(17,24,39,0.10) !important; }
+:root[data-theme="light"] .border-blue-500\/50{ border-color: rgba(37,99,235,0.25) !important; }
+:root[data-theme="light"] .border-gray-700\/50{ border-color: rgba(17,24,39,0.12) !important; }
+:root[data-theme="light"] .border-gray-700\/70{ border-color: rgba(17,24,39,0.14) !important; }
+
+/* Shadows: Tailwind shadows cenderung terlalu kuat di Light mode */
+:root[data-theme="light"] .shadow-2xl{ box-shadow: 0 18px 40px rgba(15,23,42,0.10) !important; }
+:root[data-theme="light"] .shadow-lg{ box-shadow: 0 10px 25px rgba(15,23,42,0.08) !important; }
+:root[data-theme="light"] .border-gray-600{ border-color: var(--input-border) !important; }
+
+/* Make placeholder list text readable */
+:root[data-theme="light"] .text-gray-500{ color: var(--muted) !important; }
+
+
+/* Tailwind JIT "arbitrary color" classes override so Light mode works */
+.bg-\[\#252a34\]{ background-color: var(--header) !important; }
+.bg-\[\#343a45\]{ background-color: var(--surface) !important; }
+.bg-\[\#1f2430\]{ background-color: var(--surface-2) !important; }
+
+/* Inputs (override Tailwind dark inputs on light mode) */
+:root[data-theme="light"] input,
+:root[data-theme="light"] textarea,
+:root[data-theme="light"] select{
+  background-color: var(--input-bg) !important;
+  border-color: var(--input-border) !important;
+  color: var(--text) !important;
+}
+:root[data-theme="light"] ::placeholder{ color: rgba(17,24,39,0.55) !important; }
+
+/* Generic surfaces: apply subtle border + shadow */
+.card-surface{
+  background-color: var(--surface);
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+}
+
+/* Nav links */
+.nav-link{
+  transition: all 0.2s;
+  cursor: pointer;
+}
+.nav-link.active{
+  border-bottom: 3px solid #3b82f6;
+  color: #ffffff;
+}
+:root[data-theme="light"] .nav-link.active{
+  color: #111827;
+}
+
+/* status colors */
+.text-masuk{ color: #34d399; }
+.text-keluar{ color: #f87171; }
+.text-ditolak{ color: #facc15; }
+.bg-masuk{ background-color: rgba(52, 211, 153, 0.12); }
+.bg-keluar{ background-color: rgba(248, 113, 113, 0.12); }
+.bg-ditolak{ background-color: rgba(250, 204, 21, 0.12); }
+
+/* Light mode tweaks for gray text */
+:root[data-theme="light"] .text-gray-300,
+:root[data-theme="light"] .text-gray-400,
+:root[data-theme="light"] .text-gray-500{
+  color: var(--muted) !important;
+}
+
+/* Theme toggle button */
+.theme-btn{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: .5rem;
+  padding: .5rem .75rem;
+  border-radius: .75rem;
+  border: 1px solid var(--border);
+  background: color-mix(in srgb, var(--surface) 88%, transparent);
+  color: var(--text);
+}
+.theme-btn:hover{ filter: brightness(1.05); }
+
+
+
+/* ===== Navbar additions (icons, menu, theme toggle switch) ===== */
+.icon-btn{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  background: var(--surface-2);
+  color: var(--text);
+  border: 1px solid rgba(255,255,255,0.08);
+}
+.icon-btn:hover{ filter: brightness(1.06); }
+:root[data-theme="light"] .icon-btn{
+  background: var(--surface);
+  border-color: rgba(17,24,39,0.12);
+}
+.nav-icon{
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: 0.95;
+}
+
+
+.menu{
+  position: absolute;
+  right: 0;
+  top: calc(100% + 10px);
+  width: 240px;
+  background: var(--surface);
+  border: 1px solid rgba(255,255,255,0.10);
+  border-radius: 14px;
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  z-index: 60;
+}
+.menu.hidden{ display:none; }
+.menu-header{
+  padding: 12px 14px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+.menu-title{ font-weight: 700; color: var(--text); }
+.menu-sub{ font-size: 12px; color: var(--muted); margin-top: 2px; }
+.menu-item{
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 10px 14px;
+  font-size: 14px;
+  color: var(--text);
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  text-decoration: none;
+}
+.menu-item:hover{ background: rgba(255,255,255,0.06); }
+.menu-item.danger{ color: #ff7b7b; }
+:root[data-theme="light"] .menu{ border-color: rgba(17,24,39,0.12); }
+:root[data-theme="light"] .menu-header{ border-bottom-color: rgba(17,24,39,0.10); }
+:root[data-theme="light"] .menu-item:hover{ background: rgba(17,24,39,0.06); }
+
+/* Theme toggle switch inspired by Day/Night style */
+.theme-toggle{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+.theme-toggle-track{
+  position: relative;
+  width: 76px;
+  height: 36px;
+  border-radius: 999px;
+  background: var(--surface-2);
+  border: 1px solid rgba(255,255,255,0.10);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding: 0 10px;
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,0.05);
+}
+.theme-toggle-icon{
+  font-size: 14px;
+  opacity: 0.9;
+}
+.theme-toggle-thumb{
+  position:absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  left: 6px;
+  width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  background: var(--bg);
+  border: 1px solid rgba(255,255,255,0.10);
+  transition: left 180ms ease;
+}
+.theme-toggle.is-light .theme-toggle-thumb{
+  left: calc(100% - 34px);
+}
+:root[data-theme="light"] .theme-toggle-track{
+  border-color: rgba(17,24,39,0.12);
+}
+:root[data-theme="light"] .theme-toggle-thumb{
+  background: #ffffff;
+  border-color: rgba(17,24,39,0.12);
+}
+
+/* Make nav links adapt to theme better */
+.nav-link{
+  color: var(--muted) !important;
+  border-radius: 10px;
+}
+.nav-link:hover{
+  background: rgba(255,255,255,0.06) !important;
+  color: var(--text) !important;
+}
+.nav-link.active{
+  color: var(--text) !important;
+  border-bottom: 2px solid #3b82f6;
+  background: transparent !important;
+}
+:root[data-theme="light"] .nav-link:hover{
+  background: rgba(17,24,39,0.06) !important;
+}
+
+/* Override bracket utility backgrounds in light mode */
+
+:root[data-theme="light"] .bg-\[\#0d1117\]{ background-color: var(--bg) !important; }
+:root[data-theme="light"] .bg-\[\#252a34\]{ background-color: var(--surface) !important; }
+:root[data-theme="light"] .bg-\[\#343a45\]{ background-color: var(--surface-2) !important; }
+
+/* Keep header surface consistent with theme */
+header.bg-gray-900{ background-color: var(--surface) !important; }
+
+
+/* ========= Extra light-mode readability fixes ========= */
+:root[data-theme="light"] body,
+:root[data-theme="light"] html{
+  background: var(--bg) !important;
+  color: var(--text) !important;
+}
+
+:root[data-theme="light"] h1,
+:root[data-theme="light"] h2,
+:root[data-theme="light"] h3,
+:root[data-theme="light"] h4,
+:root[data-theme="light"] h5,
+:root[data-theme="light"] h6,
+:root[data-theme="light"] p,
+:root[data-theme="light"] span,
+:root[data-theme="light"] label{
+  color: var(--text) !important;
+}
+
+/* Catch-all for tailwind text-white variants */
+:root[data-theme="light"] [class*="text-white"]{
+  color: var(--text) !important;
+}
+:root[data-theme="light"] [class*="text-gray-"]{
+  color: var(--muted) !important;
+}

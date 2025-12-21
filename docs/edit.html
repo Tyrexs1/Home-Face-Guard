@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Penghuni | Smart Home Security</title>
+<script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="assets/css/style.css"> 
+</head>
+<body>
+
+    <div id="app" class="min-h-screen">
+        <header class="sticky top-0 bg-[#252a34] shadow-lg z-10">
+  <div id="app-navbar"></div>
+</header>
+
+        <main class="max-w-3xl mx-auto py-6 sm:px-6 lg:px-8">
+            <h1 class="text-3xl font-bold text-white mb-6">Edit Penghuni: <span id="resident-name-title" class="text-yellow-400">...</span></h1>
+
+            <a href="akun.html" class="flex items-center text-blue-400 hover:text-blue-300 mb-4">
+                <svg class="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+                Kembali ke Manajemen Penghuni
+            </a>
+            <div id="edit-form-container" class="bg-[#252a34] p-6 rounded-xl shadow-2xl mb-8 border border-blue-900/50">
+                <p id="loading-message" class="text-gray-400">Memuat data penghuni...</p>
+                
+                <form id="edit-resident-form" class="space-y-4 hidden" onsubmit="event.preventDefault(); updateResidentData(event);">
+                    <input type="hidden" id="resident-id">
+                    <input type="hidden" id="initial-face-count">
+                    <input type="hidden" id="initial-name">
+
+                    <div class="space-y-4 border-b border-gray-700 pb-4">
+                         <h2 class="text-xl font-semibold text-blue-400">Data Metadata</h2>
+                        <div>
+                            <label for="edit-resident-name" class="block text-sm font-medium text-gray-300">Nama Lengkap</label>
+                            <input type="text" id="edit-resident-name" required class="mt-1 block w-full p-2 rounded-lg bg-gray-700 border border-gray-600 focus:ring-blue-500 focus:border-blue-500 text-white">
+                        </div>
+                        <div>
+                             <p class="block text-sm font-medium text-gray-300">Status Dataset Wajah:</p>
+                             <p id="face-count-info" class="text-lg font-bold text-green-400">0 sampel terdaftar</p>
+                             <p id="current-role-info" class="text-sm text-gray-400">Peran saat ini: N/A</p>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-3 pt-4">
+                        <h2 class="text-xl font-semibold text-blue-400">Update Dataset Wajah (Opsional)</h2>
+                        <p class="text-gray-400 text-sm">Mengupdate dataset akan menimpa/menambah sampel wajah yang sudah ada.</p>
+
+                        <button type="button" id="delete-dataset-btn" onclick="deleteResidentDataset(event)" class="w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 px-4 rounded-lg shadow-md transition duration-150 flex items-center justify-center text-sm">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                            Hapus Seluruh Dataset Wajah
+                        </button>
+                        <hr class="border-gray-700">
+
+                        <div>
+                            <label for="edit-resident-photo" class="block text-sm font-medium text-gray-400 mb-2">1. Unggah File Foto (Disarankan 3 Sudut)</label>
+                            <input type="file" id="edit-resident-photo" accept="image/*" multiple class="block w-full text-sm text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
+                        </div>
+                        
+                        <div class="pt-2">
+                            <label class="block text-sm font-medium text-gray-400 mb-2">2. Scan Wajah Real-Time</label>
+                            <button type="button" id="start-scan-link" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-lg shadow-md transition duration-150 flex items-center justify-center">
+                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.218A2 2 0 0110.69 4h2.62a2 2 0 011.664.89l.812 1.218A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                                Mulai Scan Wajah untuk Update Dataset
+                            </button>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg shadow-md transition duration-150 mt-4">
+                        Simpan Perubahan
+                    </button>
+                </form>
+            </div>
+        </main>
+    </div>
+
+<script src="assets/js/app.js"></script>
+<script src="assets/js/theme.js"></script>
+<script src="assets/js/auth.js"></script>
+<script src="assets/js/nav.js"></script>
+<script src="assets/js/edit.js"></script>
+</body>
+</html>
