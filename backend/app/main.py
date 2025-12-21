@@ -27,16 +27,12 @@ def create_app():
     # ✅ CORS (tanpa path, cukup origin domain)
    CORS(
     app,
-    resources={
-        r"/api/*": {
-            "origins": [
-                "https://homeface-guard.netlify.app",
-                "https://www.homeface-guard.netlify.app",
-                r"^https:\/\/.*--homeface-guard\.netlify\.app$"
-                ]
-            }
-        },
-        supports_credentials=False,
+    resources={r"/api/*": {
+        "origins": [
+            "https://homeface-guard.netlify.app",
+            "https://homeface-guard-api.onrender.com",
+            ]
+        }},
     )
 
 
