@@ -27,7 +27,7 @@ def create_app():
     # ✅ CORS (tanpa path, cukup origin domain)
     CORS(
         app,
-        resources={r"/api/*": {"origins": ["https://tyrexs1.github.io"]}},
+        resources={r"/api/*": {"origins": ["https://homefaceguard.netlify.app"]}},
         supports_credentials=False,  # ubah jadi True hanya kalau pakai cookie/session
     )
 
