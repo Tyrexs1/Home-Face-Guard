@@ -4,7 +4,8 @@
 // PLACEHOLDER API FUNCTIONS (Siap diisi dengan Panggilan 'fetch' ke Backend Flask)
 // ====================================================================
 
-const MOCK_API_BASE = 'http://127.0.0.1:5000/api'; 
+const MOCK_API_BASE = 'https://home-face-guard-api.onrender.com/api';
+
         
 let residents = [];
 let logs = [];
