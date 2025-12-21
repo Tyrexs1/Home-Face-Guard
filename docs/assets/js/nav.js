@@ -12,10 +12,12 @@
     return path === href ? 'active' : '';
   }
 
-  function isAuthPage(){
-    const path = (location.pathname.split('/').pop() || '').toLowerCase();
-    return path === 'login.html' || path === 'register.html';
-  }
+function isAuthPage(){
+  const parts = (location.pathname || '').toLowerCase().split('/').filter(Boolean);
+  const last = (parts[parts.length - 1] || '').trim();
+  return last === 'login' || last === 'login.html' || last === 'register' || last === 'register.html';
+}
+
 
   function settingsIcon(){
     // Minimal "gear" icon
