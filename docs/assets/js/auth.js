@@ -1,7 +1,7 @@
 // frontend/assets/js/auth.js
 
 // Gunakan MOCK_API_BASE dari app.js
-if (typeof MOCK_API_BASE === 'https://home-face-guard.onrender.com') {
+if (typeof MOCK_API_BASE === 'https://home-face-guard.onrender.com/api') {
     console.error('app.js belum dimuat (MOCK_API_BASE tidak ditemukan).');
 }
 
