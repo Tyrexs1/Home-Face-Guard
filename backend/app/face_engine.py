@@ -80,6 +80,27 @@ def _get_face_cascade():
     return _FACE_CASCADE
 
 
+def _downscale_for_detection(
+    gray: np.ndarray, max_side: int = 640
+) -> Tuple[np.ndarray, float]:
+    """Downscale image sebelum Haar detectMultiScale agar cepat & hemat RAM.
+
+    Return:
+    - gray_small: grayscale yang sudah dikecilkan (atau original jika kecil)
+    - inv_scale: faktor untuk mengembalikan bbox ke ukuran original (x*inv_scale, dst)
+    """
+    h, w = gray.shape[:2]
+    m = max(h, w)
+    if m <= max_side:
+        return gray, 1.0
+
+    # scale < 1.0
+    scale = max_side / float(m)
+    gray_small = cv2.resize(gray, (int(w * scale), int(h * scale)))
+    inv_scale = 1.0 / scale
+    return gray_small, inv_scale
+
+
 def detect_largest_face_gray(
     img_bgr: np.ndarray,
     scale_factor: float = 1.3,
@@ -92,13 +113,27 @@ def detect_largest_face_gray(
     cascade = _get_face_cascade()
     gray = cv2.cvtColor(img_bgr, cv2.COLOR_BGR2GRAY)
 
-    faces = cascade.detectMultiScale(gray, scale_factor, min_neighbors)
+    # ✅ Perbaikan: downscale sebelum detectMultiScale (menghindari timeout/OOM)
+    gray_small, inv = _downscale_for_detection(gray, max_side=640)
+
+    faces = cascade.detectMultiScale(
+        gray_small,
+        scaleFactor=scale_factor,
+        minNeighbors=min_neighbors,
+        minSize=(60, 60),
+    )
     if faces is None or len(faces) == 0:
         return None
 
-    # Pilih wajah terbesar
+    # Pilih wajah terbesar (di koordinat gray_small)
     x, y, w, h = max(faces, key=lambda f: int(f[2]) * int(f[3]))
+
+    # Kembalikan bbox ke koordinat original
+    x, y, w, h = int(x * inv), int(y * inv), int(w * inv), int(h * inv)
+
     face = gray[y : y + h, x : x + w]
+    if face.size == 0:
+        return None
 
     # Normalisasi ukuran & sedikit normalisasi kontras
     face = cv2.resize(face, (200, 200))
@@ -129,8 +164,11 @@ def detect_faces_gray(
     cascade = _get_face_cascade()
     gray = cv2.cvtColor(img_bgr, cv2.COLOR_BGR2GRAY)
 
+    # ✅ Perbaikan: downscale sebelum detectMultiScale
+    gray_small, inv = _downscale_for_detection(gray, max_side=640)
+
     faces = cascade.detectMultiScale(
-        gray,
+        gray_small,
         scaleFactor=scale_factor,
         minNeighbors=min_neighbors,
         minSize=min_size,
@@ -140,6 +178,9 @@ def detect_faces_gray(
 
     out: List[Tuple[np.ndarray, Tuple[int, int, int, int]]] = []
     for (x, y, w, h) in faces:
+        # Kembalikan bbox ke koordinat original
+        x, y, w, h = int(x * inv), int(y * inv), int(w * inv), int(h * inv)
+
         face = gray[y : y + h, x : x + w]
         if face.size == 0:
             continue
