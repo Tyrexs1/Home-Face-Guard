@@ -4,6 +4,7 @@
 // API BASE (Render) — PASTIKAN TANPA TRAILING SLASH
 // ====================================================================
 const API_BASE = 'https://home-face-guard.onrender.com/api';
+const MOCK_API_BASE = API_BASE;
 
 let residents = [];
 let logs = [];
